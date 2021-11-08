@@ -1,6 +1,7 @@
 package com.davor.security.DavorSecurity.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +15,8 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests((requests) -> {
             requests.antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll();
             requests.antMatchers("/beers/find").permitAll();
+            requests.antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll();
+            requests.mvcMatchers(HttpMethod.GET,"/api/v1/beerUpc/{upc}").permitAll();
             ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated();
         });
         http.formLogin();
