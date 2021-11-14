@@ -3,6 +3,7 @@ package com.davor.security.DavorSecurity.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,21 +29,34 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
     }
 
-    @Bean
+//    @Bean
+//    @Override
+//    public UserDetailsService userDetailsServiceBean() throws Exception {
+//        final UserDetails user1 = User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("password")
+//                .roles("ADMIN")
+//                .build();
+//
+//        final UserDetails user2 = User.withDefaultPasswordEncoder()
+//                .username("jacobo")
+//                .password("20210712")
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user1, user2);
+//    }
+
+
     @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        final UserDetails user1 = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user")
+                .password("{noop}password")
                 .roles("ADMIN")
-                .build();
-
-        final UserDetails user2 = User.withDefaultPasswordEncoder()
-                .username("jacobo")
-                .password("20210712")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1, user2);
+                .and()
+                .withUser("jacobo")
+                .password("{noop}20210712")
+                .roles("USER");
     }
 }
