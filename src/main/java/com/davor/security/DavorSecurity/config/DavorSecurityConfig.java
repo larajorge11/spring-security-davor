@@ -77,5 +77,13 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("jorge")
                 .password("{ldap}{SSHA}DdeLH07lXO3z99c83Dqp0oZVxS1qgS7Ej5AXZw==") // LDAP
                 .roles("READER");
+
+        // Exercise bcrypt encoder using a strength of 15
+        auth.inMemoryAuthentication()
+                .withUser("scott")
+                .password("{bcrypt15}$2a$15$ClFfAkuYtTQqiuzwSxN8tOQQZMLzrEfJ2GIgwwSWbIqJtppeGQ2tK") // bcrypt15
+                .roles("READER");
+
+
     }
 }

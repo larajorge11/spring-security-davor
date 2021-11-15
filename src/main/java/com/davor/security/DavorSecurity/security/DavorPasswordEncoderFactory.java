@@ -1,9 +1,7 @@
 package com.davor.security.DavorSecurity.security;
 
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.*;
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +15,7 @@ public class DavorPasswordEncoderFactory {
         encoders.put("ldap", new LdapShaPasswordEncoder());
         encoders.put("noop", NoOpPasswordEncoder.getInstance());
         encoders.put("sha256", new StandardPasswordEncoder());
+        encoders.put("bcrypt15", new BCryptPasswordEncoder(15));
         return new DelegatingPasswordEncoder(encodingId, encoders);
     }
 
