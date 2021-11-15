@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -25,7 +26,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new StandardPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -64,7 +65,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user")
-                .password("75ecbe436d2d21d7787c3505f41ac1bed4980789a04b2f9f91979e8745152a90dde858e2b96e7acf")
+                .password("$2a$10$kWHzQyJVitQOpFQx/nXyJeBc.fAVt0zNq4Typ/lqOr2H8JrGVx/mK")
                 .roles("ADMIN")
                 .and()
                 .withUser("jacobo")
