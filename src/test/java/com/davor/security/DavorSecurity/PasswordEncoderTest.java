@@ -1,6 +1,7 @@
 package com.davor.security.DavorSecurity;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
@@ -21,5 +22,11 @@ public class PasswordEncoderTest {
     void testWithNoOpEncryption() {
         PasswordEncoder noOpEncoder = NoOpPasswordEncoder.getInstance();
         System.out.println(noOpEncoder.encode(PASSWORD));
+    }
+
+    @Test
+    void testLdapEncryption() {
+        PasswordEncoder ldapEncoder = new LdapShaPasswordEncoder();
+        System.out.println(ldapEncoder.encode(PASSWORD));
     }
 }
