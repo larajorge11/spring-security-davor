@@ -16,6 +16,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
@@ -24,7 +25,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new LdapShaPasswordEncoder();
+        return new StandardPasswordEncoder();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user")
-                .password("{SSHA}w9vKeN9YMFj6d5GmR1NBqWqAEXMrVp0Q/WS/aA==")
+                .password("75ecbe436d2d21d7787c3505f41ac1bed4980789a04b2f9f91979e8745152a90dde858e2b96e7acf")
                 .roles("ADMIN")
                 .and()
                 .withUser("jacobo")

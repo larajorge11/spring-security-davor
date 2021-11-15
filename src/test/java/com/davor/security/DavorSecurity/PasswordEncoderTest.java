@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -28,5 +29,12 @@ public class PasswordEncoderTest {
     void testLdapEncryption() {
         PasswordEncoder ldapEncoder = new LdapShaPasswordEncoder();
         System.out.println(ldapEncoder.encode(PASSWORD));
+    }
+
+    @Test
+    void testSHA256Encryption() {
+        PasswordEncoder sha256 = new StandardPasswordEncoder();
+        System.out.println(sha256.encode(PASSWORD));
+        System.out.println(sha256.encode(PASSWORD));
     }
 }
