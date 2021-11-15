@@ -1,5 +1,6 @@
 package com.davor.security.DavorSecurity.config;
 
+import com.davor.security.DavorSecurity.security.DavorPasswordEncoderFactory;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return DavorPasswordEncoderFactory.createDelegatingPasswordEncoder();
     }
 
     @Override
