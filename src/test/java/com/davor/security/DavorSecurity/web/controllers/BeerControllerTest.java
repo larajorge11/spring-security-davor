@@ -11,15 +11,45 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 class BeerControllerTest extends BaseIT {
 
+    private static final String PASSWORD = "davor1989";
+
     @Test
-    void authenticateUserSuccess() throws Exception {
-        mockMvc.perform(get("/api/v1/beer").with(httpBasic("user", "password")))
+    void authenticateUserSHA516Success() throws Exception {
+        mockMvc.perform(get("/api/v1/beer").with(httpBasic("user", PASSWORD)))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    void authenticateUserForbidden() throws Exception {
+    void authenticateJacoboBcryptSuccess() throws Exception {
+        mockMvc.perform(get("/api/v1/beer").with(httpBasic("jacobo", PASSWORD)))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void authenticateJorgeLdapSuccess() throws Exception {
+        mockMvc.perform(get("/api/v1/beer").with(httpBasic("jorge", PASSWORD)))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void authenticateUserSHA516Forbidden() throws Exception {
+        mockMvc.perform(get("/api/v1/beer").with(httpBasic("user", "password")))
+                .andExpect(status().isUnauthorized());
+
+    }
+
+    @Test
+    void authenticateJacoboBcryptForbidden() throws Exception {
+        mockMvc.perform(get("/api/v1/beer").with(httpBasic("jacobo", "password")))
+                .andExpect(status().isUnauthorized());
+
+    }
+
+    @Test
+    void authenticateJorgeLdpaForbidden() throws Exception {
         mockMvc.perform(get("/api/v1/beer").with(httpBasic("jorge", "password")))
                 .andExpect(status().isUnauthorized());
 
