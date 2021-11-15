@@ -37,6 +37,8 @@ public class PasswordEncoderTest {
         PasswordEncoder sha256 = new StandardPasswordEncoder();
         System.out.println(sha256.encode(PASSWORD));
         System.out.println(sha256.encode(PASSWORD));
+
+        System.out.println(sha256.encode("test"));
     }
 
     @Test

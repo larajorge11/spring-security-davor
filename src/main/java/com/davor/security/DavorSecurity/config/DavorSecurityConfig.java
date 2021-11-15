@@ -26,7 +26,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -65,11 +65,16 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user")
-                .password("$2a$10$kWHzQyJVitQOpFQx/nXyJeBc.fAVt0zNq4Typ/lqOr2H8JrGVx/mK")
+                .password("{sha256}8c105208827eaf331c69dd001f06cbb0586f657c499d1372c7c06ebebbb81271e462d643a87e86bb") // SHA516
                 .roles("ADMIN")
                 .and()
                 .withUser("jacobo")
-                .password("20210712")
+                .password("{bcrypt}$2a$10$9Nh10.qGlIl2G5LUIqKGwuzIppkPyPziP/a/g78qRFweTMNZKlad6") // BCRYPT
                 .roles("USER");
+
+        auth.inMemoryAuthentication()
+                .withUser("jorge")
+                .password("{ldap}{SSHA}DdeLH07lXO3z99c83Dqp0oZVxS1qgS7Ej5AXZw==") // LDAP
+                .roles("READER");
     }
 }
