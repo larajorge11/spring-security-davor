@@ -5,6 +5,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -12,6 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BeerControllerTest extends BaseIT {
 
     private static final String PASSWORD = "davor1989";
+
+    @Test
+    void testDeleteBeer() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/d2509314-7cc3-4515-951f-e08edb21e2d2")
+                .header("Api-Key", "davor-api-key")
+                .header("Api-Secret", "davor-secret"))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void authenticateUserSHA516Success() throws Exception {
