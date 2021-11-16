@@ -17,9 +17,17 @@ class BeerControllerTest extends BaseIT {
     @Test
     void testDeleteBeer() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/9b867954-a78a-4aa6-9ea7-4fb973c2fa13")
-                .header("Api-Key", "spring")
-                .header("Api-Secret", "secret"))
+                .header("Api-Key", "jacobo")
+                .header("Api-Secret", "davor1989"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testDeleteBeerBadCredentials() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/9b867954-a78a-4aa6-9ea7-4fb973c2fa13")
+                        .header("Api-Key", "test")
+                        .header("Api-Secret", "test1989"))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

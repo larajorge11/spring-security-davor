@@ -43,12 +43,12 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
             requests.mvcMatchers(HttpMethod.GET,"/api/v1/beerUpc/{upc}").permitAll();
             requests.mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/{beerId}").permitAll();
             requests.antMatchers("/h2/**").permitAll();
-            ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated();
-        });
-        http.csrf().disable();
-        http.headers().frameOptions().sameOrigin();
-        http.formLogin();
-        http.httpBasic();
+        })
+                .authorizeRequests()
+                        .anyRequest().authenticated()
+                        .and()
+                                .formLogin().and()
+                        .httpBasic();
     }
 
 //    @Bean
@@ -78,7 +78,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("ADMIN")
                 .and()
                 .withUser("jacobo")
-                .password("{bcrypt}$2a$10$9Nh10.qGlIl2G5LUIqKGwuzIppkPyPziP/a/g78qRFweTMNZKlad6") // BCRYPT
+                .password("{bcrypt}$2a$10$XUyzkH.ARZI8Mf7gKpd5Vu66sCO9TSAF8wWpCRRnDYhEG9eDJepIS") // BCRYPT
                 .roles("USER");
 
         auth.inMemoryAuthentication()
