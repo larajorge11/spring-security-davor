@@ -37,8 +37,11 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
             requests.antMatchers("/beers/find").permitAll();
             requests.antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll();
             requests.mvcMatchers(HttpMethod.GET,"/api/v1/beerUpc/{upc}").permitAll();
+            requests.antMatchers("/h2/**").permitAll();
             ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated();
         });
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
         http.formLogin();
         http.httpBasic();
     }
