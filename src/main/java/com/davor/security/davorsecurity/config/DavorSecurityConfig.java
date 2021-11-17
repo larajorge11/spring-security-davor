@@ -2,6 +2,7 @@ package com.davor.security.davorsecurity.config;
 
 import com.davor.security.davorsecurity.security.DavorPasswordEncoderFactory;
 import com.davor.security.davorsecurity.security.RestHeaderAuthenticationFilter;
+import com.davor.security.davorsecurity.security.RestUrlAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -25,6 +25,12 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    public RestUrlAuthenticationFilter restUrlAuthenticationFilter(AuthenticationManager authenticationManager) {
+        RestUrlAuthenticationFilter filter = new RestUrlAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return DavorPasswordEncoderFactory.createDelegatingPasswordEncoder();
@@ -34,6 +40,9 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(restHeaderAuthenticationFilter(authenticationManager()),
+                UsernamePasswordAuthenticationFilter.class).csrf().disable();
+
+        http.addFilterBefore(restUrlAuthenticationFilter(authenticationManager()),
                 UsernamePasswordAuthenticationFilter.class).csrf().disable();
 
         http.authorizeRequests((requests) -> {
