@@ -31,6 +31,14 @@ class BeerControllerTest extends BaseIT {
     }
 
     @Test
+    void testDeleteBeerCredentialsFromUrlSuccess() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/9b867954-a78a-4aa6-9ea7-4fb973c2fa13")
+                        .param("Api-Key", "jacobo")
+                        .param("Api-Secret", "davor1989"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void authenticateUserSHA516Success() throws Exception {
         mockMvc.perform(get("/api/v1/beer").with(httpBasic("user", PASSWORD)))
                 .andExpect(status().isOk());
