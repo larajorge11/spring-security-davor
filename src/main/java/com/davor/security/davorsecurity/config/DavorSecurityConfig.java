@@ -25,6 +25,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+
     public RestUrlAuthenticationFilter restUrlAuthenticationFilter(AuthenticationManager authenticationManager) {
         RestUrlAuthenticationFilter filter = new RestUrlAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager);
