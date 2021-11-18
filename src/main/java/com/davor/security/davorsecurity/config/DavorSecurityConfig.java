@@ -59,6 +59,7 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()
                                 .formLogin().and()
                         .httpBasic();
+        http.headers().frameOptions().sameOrigin();
     }
 
 //    @Bean
