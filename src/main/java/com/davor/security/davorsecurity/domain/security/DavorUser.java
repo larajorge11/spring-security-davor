@@ -27,8 +27,8 @@ public class DavorUser {
 
     @Singular
     @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "user_authority", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-    inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    @JoinTable(name = "user_authority", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "user_id")},
+    inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "authority_id")})
     private Set<DavorAuthority> authorities;
 
     @Builder.Default

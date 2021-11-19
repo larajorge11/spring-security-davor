@@ -46,6 +46,8 @@ public class PasswordEncoderTest {
         PasswordEncoder bcrypt = new BCryptPasswordEncoder();
         PasswordEncoder bcrypt2 = new BCryptPasswordEncoder(15); // Default 10, takes more tome higher than 10
         System.out.println(bcrypt.encode(PASSWORD));
+        System.out.println(bcrypt.encode(PASSWORD));
+        System.out.println(bcrypt.encode(PASSWORD));
         System.out.println(bcrypt2.encode(PASSWORD));
     }
 }

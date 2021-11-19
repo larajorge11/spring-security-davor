@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -21,6 +22,8 @@ public class DavorAuthority {
     @Column(name = "authority_id", updatable = false)
     private UUID authorityId;
 
-    @ManyToMany(mappedBy = "authorities")
     private String role;
+
+    @ManyToMany(mappedBy = "authorities")
+    private Set<DavorUser> users;
 }
