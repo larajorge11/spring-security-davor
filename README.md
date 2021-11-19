@@ -13,3 +13,6 @@
 * Spring JPA Repositores
 * Custom implementation of User Details Service
 * Configure Spring Secutiry to use the custom implementation of User Detail Service
+
+### Tips
+* Don't use @Data of Lombok when there is a @ManyToMany: It will create two methods equals and hash code 

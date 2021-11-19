@@ -1,10 +1,16 @@
 package com.davor.security.davorsecurity.domain.security;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity(name = "DavorAuthority")
 @Table(name = "authority")
 public class DavorAuthority {
