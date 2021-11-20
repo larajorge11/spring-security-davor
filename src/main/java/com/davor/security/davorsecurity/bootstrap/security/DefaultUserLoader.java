@@ -44,19 +44,19 @@ public class DefaultUserLoader implements CommandLineRunner {
         authorityRepository.saveAll(List.of(authorityAdmin, authorityUser, authorityCustomer));
 
         DavorUser user1 = DavorUser.builder()
-                .username("spring")
+                .username("jorge")
                 .password(encoder.encode("davor1989"))
                 .authorities(new HashSet<>(Set.of(authorityAdmin)))
                 .build();
 
         DavorUser user2 = DavorUser.builder()
-                .username("user")
+                .username("jacobo")
                 .password(encoder.encode("davor1989"))
                 .authorities(new HashSet<>(Set.of(authorityUser)))
                 .build();
 
         DavorUser user3 = DavorUser.builder()
-                .username("spring")
+                .username("davor")
                 .password(encoder.encode("davor1989"))
                 .authorities(new HashSet<>(Set.of(authorityCustomer)))
                 .build();

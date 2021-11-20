@@ -3,6 +3,8 @@ package com.davor.security.davorsecurity.config;
 import com.davor.security.davorsecurity.security.DavorPasswordEncoderFactory;
 import com.davor.security.davorsecurity.security.RestHeaderAuthenticationFilter;
 import com.davor.security.davorsecurity.security.RestUrlAuthenticationFilter;
+import com.davor.security.davorsecurity.services.security.JpaUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +20,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @Configuration
 public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JpaUserDetailsService userDetailsService;
 
     public RestHeaderAuthenticationFilter restHeaderAuthenticationFilter(AuthenticationManager authenticationManager) {
         RestHeaderAuthenticationFilter filter = new RestHeaderAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
@@ -81,28 +86,32 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("user")
+//                .password("{sha256}8c105208827eaf331c69dd001f06cbb0586f657c499d1372c7c06ebebbb81271e462d643a87e86bb") // SHA516
+//                .roles("ADMIN")
+//                .and()
+//                .withUser("jacobo")
+//                .password("{bcrypt}$2a$10$XUyzkH.ARZI8Mf7gKpd5Vu66sCO9TSAF8wWpCRRnDYhEG9eDJepIS") // BCRYPT
+//                .roles("USER");
+//
+//        auth.inMemoryAuthentication()
+//                .withUser("jorge")
+//                .password("{ldap}{SSHA}DdeLH07lXO3z99c83Dqp0oZVxS1qgS7Ej5AXZw==") // LDAP
+//                .roles("READER");
+//
+//        // Exercise bcrypt encoder using a strength of 15
+//        auth.inMemoryAuthentication()
+//                .withUser("scott")
+//                .password("{bcrypt15}$2a$15$ClFfAkuYtTQqiuzwSxN8tOQQZMLzrEfJ2GIgwwSWbIqJtppeGQ2tK") // bcrypt15
+//                .roles("READER");
+//
+//
+//    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user")
-                .password("{sha256}8c105208827eaf331c69dd001f06cbb0586f657c499d1372c7c06ebebbb81271e462d643a87e86bb") // SHA516
-                .roles("ADMIN")
-                .and()
-                .withUser("jacobo")
-                .password("{bcrypt}$2a$10$XUyzkH.ARZI8Mf7gKpd5Vu66sCO9TSAF8wWpCRRnDYhEG9eDJepIS") // BCRYPT
-                .roles("USER");
-
-        auth.inMemoryAuthentication()
-                .withUser("jorge")
-                .password("{ldap}{SSHA}DdeLH07lXO3z99c83Dqp0oZVxS1qgS7Ej5AXZw==") // LDAP
-                .roles("READER");
-
-        // Exercise bcrypt encoder using a strength of 15
-        auth.inMemoryAuthentication()
-                .withUser("scott")
-                .password("{bcrypt15}$2a$15$ClFfAkuYtTQqiuzwSxN8tOQQZMLzrEfJ2GIgwwSWbIqJtppeGQ2tK") // bcrypt15
-                .roles("READER");
-
-
+        auth.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
     }
 }
