@@ -2,6 +2,7 @@ package com.davor.security.davorsecurity.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest
+@SpringBootTest
 class BeerControllerTest extends BaseIT {
 
     private static final String PASSWORD = "davor1989";
@@ -40,7 +41,7 @@ class BeerControllerTest extends BaseIT {
 
     @Test
     void authenticateUserSHA516Success() throws Exception {
-        mockMvc.perform(get("/api/v1/beer").with(httpBasic("user", PASSWORD)))
+        mockMvc.perform(get("/api/v1/beer").with(httpBasic("davor", PASSWORD)))
                 .andExpect(status().isOk());
 
     }
