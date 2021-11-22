@@ -52,18 +52,22 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class).csrf().disable();
 
         http.authorizeRequests((requests) -> {
+            requests.antMatchers("/h2/**").permitAll();
             requests.antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll();
             requests.antMatchers("/beers/find").permitAll();
             requests.antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll();
+            requests.mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN");
             requests.mvcMatchers(HttpMethod.GET,"/api/v1/beerUpc/{upc}").permitAll();
-            requests.mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/{beerId}").permitAll();
-            requests.antMatchers("/h2/**").permitAll();
+            requests.mvcMatchers( "/brewery/breweries").hasRole("CUSTOMER");
+            requests.mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries").hasRole("CUSTOMER");
         })
                 .authorizeRequests()
                         .anyRequest().authenticated()
                         .and()
                                 .formLogin().and()
-                        .httpBasic();
+                        .httpBasic()
+                                .and().csrf().disable();
+
         http.headers().frameOptions().sameOrigin();
     }
 

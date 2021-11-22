@@ -18,9 +18,23 @@ class BeerControllerTest extends BaseIT {
     @Test
     void testDeleteBeer() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/9b867954-a78a-4aa6-9ea7-4fb973c2fa13")
-                .header("Api-Key", "jacobo")
+                .header("Api-Key", "jorge")
                 .header("Api-Secret", "davor1989"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testDeleteBeerCustomerRole() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/9b867954-a78a-4aa6-9ea7-4fb973c2fa13")
+                        .with(httpBasic("davor", "davor1989")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testDeleteBeerUserRole() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/9b867954-a78a-4aa6-9ea7-4fb973c2fa13")
+                        .with(httpBasic("jacobo", "davor1989")))
+                .andExpect(status().isForbidden());
     }
 
     @Test
