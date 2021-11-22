@@ -30,7 +30,7 @@ class BreweryControllerTest extends BaseIT {
     void testUserWithAdminRole() throws Exception {
         mockMvc.perform(get("/brewery/breweries")
                         .with(httpBasic("jorge",PASSWORD)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
@@ -50,7 +50,7 @@ class BreweryControllerTest extends BaseIT {
     void testGetBreweriesAdmin() throws Exception {
         mockMvc.perform(get("/brewery/api/v1/breweries")
                         .with(httpBasic("jorge", PASSWORD)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
