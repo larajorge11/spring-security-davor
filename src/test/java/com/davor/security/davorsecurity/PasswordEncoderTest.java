@@ -1,5 +1,6 @@
 package com.davor.security.davorsecurity;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
 
+@Disabled
 public class PasswordEncoderTest {
 
     private static final String PASSWORD = "davor1989";
