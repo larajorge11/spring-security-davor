@@ -20,7 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -60,8 +60,8 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasAnyRole("ADMIN", "CUSTOMER", "USER");
             requests.antMatchers(HttpMethod.GET, "/api/v1/beer/**")
                     .hasAnyRole("ADMIN", "CUSTOMER", "USER");
-            requests.mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**")
-                    .hasRole("ADMIN");
+//            requests.mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**")
+//                    .hasRole("ADMIN");
             requests.mvcMatchers(HttpMethod.GET,"/api/v1/beerUpc/{upc}")
                     .hasAnyRole("ADMIN", "CUSTOMER", "USER");
             requests.mvcMatchers( "/brewery/breweries")
