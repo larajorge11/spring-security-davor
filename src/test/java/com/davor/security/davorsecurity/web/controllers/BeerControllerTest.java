@@ -1,9 +1,13 @@
 package com.davor.security.davorsecurity.web.controllers;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -14,6 +18,52 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BeerControllerTest extends BaseIT {
 
     private static final String PASSWORD = "davor1989";
+
+//    @DisplayName(value = "Init New Form")
+//    @Nested
+//    class InitNewForm {
+//
+//        @Test
+//        void initCreationFormAuth() throws Exception {
+//            mockMvc.perform(get("/beers/new")
+//                    .with(httpBasic("jorge", PASSWORD)))
+//                    .andExpect(status().isOk())
+//                    //.andExpect(view().name("beers/createBeer"))
+//                    .andExpect(model().attributeExists("beer"));
+//        }
+//
+//        void initCreationFormNoAuth() throws Exception {
+//            mockMvc.perform(get("/beers/new"))
+//                    .andExpect(status().isUnauthorized());
+//        }
+//    }
+
+    @DisplayName(value = "Init Find Beer Form")
+    @Nested
+    class FindForm{
+
+        @ParameterizedTest(name = "#{index} with [{arguments}]")
+        @MethodSource("com.davor.security.davorsecurity.web.controllers.BeerControllerTest#getStreamAllUsers")
+        void findBeersFormAuth(String user, String pwd) throws Exception {
+            mockMvc.perform(get("/beers/find").with(httpBasic(user, pwd)))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("beers/findBeers"))
+                    .andExpect(model().attributeExists("beer"));
+        }
+
+        @Test
+        void findBeersFormNoAuth() throws Exception {
+            mockMvc.perform(get("/beers/find").with(anonymous()))
+                    .andExpect(status().isUnauthorized());
+        }
+    }
+
+    @Test
+    void testFindBeerFormAdminRole() throws Exception {
+        mockMvc.perform(get("/beers").param("beerName", "")
+                        .with(httpBasic("jorge", PASSWORD)))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void testDeleteBeer() throws Exception {
@@ -95,21 +145,10 @@ class BeerControllerTest extends BaseIT {
 
     }
 
-    @Test
-    void findBeers() throws Exception {
-        mockMvc.perform(get("/api/v1/beer"))
-                .andExpect(status().isOk());
-    }
-
 //    @Test
 //    void getBeerById() throws Exception {
 //        mockMvc.perform(get("/api/v1/beer/0631234200036"))
 //                .andExpect(status().isOk());
 //    }
 
-    @Test
-    void getBeerByUpc() throws Exception {
-        mockMvc.perform(get("/api/v1/beerUpc/0631234200036"))
-                .andExpect(status().isOk());
-    }
 }

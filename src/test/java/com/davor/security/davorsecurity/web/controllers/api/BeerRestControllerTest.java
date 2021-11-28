@@ -7,6 +7,8 @@ import com.davor.security.davorsecurity.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -47,17 +49,11 @@ class BeerRestControllerTest extends BaseIT {
                     .andExpect(status().is2xxSuccessful());
         }
 
-        @Test
-        void deleteBeerHttpBasicUserRole() throws Exception {
+        @ParameterizedTest(name = "#{index} with [{arguments}]")
+        @MethodSource(value = "com.davor.security.davorsecurity.web.controllers.api.BeerRestControllerTest#getStreamNotAdminUsers")
+        void deleteBeerNoAuthorizedRole(String user, String password) throws Exception {
             mockMvc.perform(delete("/api/v1/beer/" + beerToDelete().getId())
-                    .with(httpBasic("jacobo", PASSWORD)))
-                    .andExpect(status().isForbidden());
-        }
-
-        @Test
-        void deleteBeerHttpBasicCustomerRole() throws Exception {
-            mockMvc.perform(delete("/api/v1/beer/" + beerToDelete().getId())
-                            .with(httpBasic("davor", PASSWORD)))
+                            .with(httpBasic(user, password)))
                     .andExpect(status().isForbidden());
         }
 
@@ -68,24 +64,65 @@ class BeerRestControllerTest extends BaseIT {
         }
     }
 
-    @Test
-    void testFindBeerFormAdminRole() throws Exception {
-        mockMvc.perform(get("/beers").param("beerName", "")
-                .with(httpBasic("jorge", PASSWORD)))
-                .andExpect(status().isOk());
+    @DisplayName(value = "List Beers")
+    @Nested
+    class ListBeers {
+
+        @Test
+        void findBeers() throws Exception {
+            mockMvc.perform(get("/api/v1/beer/"))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        @ParameterizedTest(name = "#{index} with [{arguments}]")
+        @MethodSource(value = "com.davor.security.davorsecurity.web.controllers.api.BeerRestControllerTest#getStreamAllUsers")
+        void findBeerAuthenticated(String user, String password) throws Exception {
+            mockMvc.perform(get("/api/v1/beer/")
+                    .with(httpBasic(user, password)))
+                    .andExpect(status().isOk());
+        }
     }
 
-    @Test
-    void findBeers() throws Exception {
-        mockMvc.perform(get("/api/v1/beer/"))
-                .andExpect(status().isOk());
+    @DisplayName(value = "Get Beer By ID")
+    @Nested
+    class GetBeerById {
+
+        @Test
+        void findBeerById() throws Exception {
+            Beer beer = beerRepository.findAll().get(0);
+
+            mockMvc.perform(get("/api/v1/beer/" + beer.getId()))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        @ParameterizedTest(name = "#{index} with [{arguments}]")
+        @MethodSource(value = "com.davor.security.davorsecurity.web.controllers.api.BeerRestControllerTest#getStreamAllUsers")
+        void findBeerByIdAuthenticated(String user, String password) throws Exception {
+            Beer beer = beerRepository.findAll().get(0);
+
+            mockMvc.perform(get("/api/v1/beer/" + beer.getId())
+                            .with(httpBasic(user, password)))
+                    .andExpect(status().isOk());
+        }
     }
 
-    @Test
-    void findBeerById() throws Exception {
-        Beer beer = beerRepository.findAll().get(0);
+    @DisplayName(value = "Get Beer By UPC")
+    @Nested
+    class GetBeerByUpc {
 
-        mockMvc.perform(get("/api/v1/beer/" + beer.getId()))
-                .andExpect(status().isOk());
+        @Test
+        void getBeerByUpc() throws Exception {
+            mockMvc.perform(get("/api/v1/beerUpc/0631234200036"))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        @ParameterizedTest(name = "#{index} with [{arguments}]")
+        @MethodSource(value = "com.davor.security.davorsecurity.web.controllers.api.BeerRestControllerTest#getStreamAllUsers")
+        void findBeerByIdAuthenticated(String user, String password) throws Exception {
+            mockMvc.perform(get("/api/v1/beerUpc/0631234200036")
+                            .with(httpBasic(user, password)))
+                    .andExpect(status().isOk());
+        }
     }
+
 }
