@@ -30,15 +30,15 @@ public class DefaultUserLoader implements CommandLineRunner {
 
     private void loadUserData() {
         DavorAuthority authorityAdmin = DavorAuthority.builder()
-                .role("ROLE_ADMIN")
+                .permission("ROLE_ADMIN")
                 .build();
 
         DavorAuthority authorityUser = DavorAuthority.builder()
-                .role("ROLE_USER")
+                .permission("ROLE_USER")
                 .build();
 
         DavorAuthority authorityCustomer = DavorAuthority.builder()
-                .role("ROLE_CUSTOMER")
+                .permission("ROLE_CUSTOMER")
                 .build();
 
         authorityRepository.saveAll(List.of(authorityAdmin, authorityUser, authorityCustomer));

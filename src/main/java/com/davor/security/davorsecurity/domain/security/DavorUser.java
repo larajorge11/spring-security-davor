@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,10 +27,20 @@ public class DavorUser {
     private String password;
 
     @Singular
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "user_authority", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "user_id")},
-    inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "authority_id")})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "role_id")})
+    private Set<DavorRole> roles;
+
+    @Transient
     private Set<DavorAuthority> authorities;
+
+    public Set<DavorAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(DavorRole::getAuthorities)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+    }
 
     @Builder.Default
     private boolean accountNonExpired = true;

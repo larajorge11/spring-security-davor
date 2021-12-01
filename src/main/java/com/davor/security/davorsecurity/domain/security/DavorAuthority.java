@@ -22,8 +22,8 @@ public class DavorAuthority {
     @Column(name = "authority_id", updatable = false)
     private UUID authorityId;
 
-    private String role;
+    private String permission;
 
     @ManyToMany(mappedBy = "authorities")
-    private Set<DavorUser> users;
+    private Set<DavorRole> roles;
 }
