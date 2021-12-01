@@ -27,7 +27,7 @@ public class DavorUser {
     private String password;
 
     @Singular
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "role_id")})
     private Set<DavorRole> roles;

@@ -27,7 +27,7 @@ public class DavorRole {
     private Set<DavorUser> users;
 
     @Singular
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "role_authority", joinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "role_id")},
     inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "authority_id")})
     private Set<DavorAuthority> authorities;
