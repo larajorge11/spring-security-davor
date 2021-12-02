@@ -56,12 +56,6 @@ public class DavorSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests((requests) -> {
             requests.antMatchers("/h2/**").permitAll();
             requests.antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll();
-            requests.antMatchers("/beers/find")
-                    .hasAnyRole("ADMIN", "CUSTOMER", "USER");
-            requests.mvcMatchers( "/brewery/breweries")
-                    .hasAnyRole("ADMIN", "CUSTOMER");
-            requests.mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries")
-                    .hasAnyRole("ADMIN", "CUSTOMER");
         })
                 .authorizeRequests()
                         .anyRequest().authenticated()

@@ -64,12 +64,12 @@ public class DefaultUserLoader implements CommandLineRunner {
         DavorRole userRole = DavorRole.builder().name("USER").build();
 
         Set<DavorAuthority> beerAdminAuthorities = Set.of(createBeer, readBeer, updateBeer, deleteBeer);
-        Set<DavorAuthority> breweryAdminAuthorities = Set.of(createBeer, readBeer, updateBeer, deleteBeer);
-        Set<DavorAuthority> customerAdminAuthorities = Set.of(createBeer, readBeer, updateBeer, deleteBeer);
+        Set<DavorAuthority> breweryAdminAuthorities = Set.of(createBrewery, readBrewery, updateBrewery, deleteBrewery);
+        Set<DavorAuthority> customerAdminAuthorities = Set.of(createCustomer, readCustomer, updateCustomer, deleteCustomer);
 
         Set<DavorAuthority> beerCustomerAuthorities = Set.of(readBeer);
-        Set<DavorAuthority> breweryCustomerAuthorities = Set.of(readBeer);
-        Set<DavorAuthority> customerCustomerAuthorities = Set.of(readBeer);
+        Set<DavorAuthority> breweryCustomerAuthorities = Set.of(readBrewery);
+        Set<DavorAuthority> customerCustomerAuthorities = Set.of(readCustomer);
 
         Set<DavorAuthority> beerUserAuthorities = Set.of(readBeer);
         Set<DavorAuthority> breweryUserAuthorities = new HashSet<>();
