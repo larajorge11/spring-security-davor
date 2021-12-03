@@ -19,6 +19,8 @@ package com.davor.security.davorsecurity.web.controllers;
 
 import com.davor.security.davorsecurity.domain.Customer;
 import com.davor.security.davorsecurity.repositories.CustomerRepository;
+import com.davor.security.davorsecurity.security.perms.CustomerCreatePermission;
+import com.davor.security.davorsecurity.security.perms.CustomerReadPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +51,7 @@ public class CustomerController {
         return "customers/findCustomers";
     }
 
-    @PreAuthorize("hasAuthority('customer.read')")
+    @CustomerReadPermission
     @GetMapping
     public String processFindFormReturnMany(Customer customer, BindingResult result, Model model){
         // find customers by name
@@ -84,7 +86,7 @@ public class CustomerController {
         return "customers/createCustomer";
     }
 
-    @PreAuthorize("hasAuthority('customer.create')")
+    @CustomerCreatePermission
     @PostMapping("/new")
     public String processCreationForm(Customer customer) {
         //ToDO: Add Service

@@ -30,3 +30,4 @@
 ### Tips
 * Don't use @Data of Lombok when there is a @ManyToMany: It will create two methods equals and hash code 
 * By default, Spring Security Roles start with "ROLE_" e.g. ROLE_ADMIN
+* The RetentionPolicy RUNTIME is telling the Java compiler that this annotation should be retained at runtime, so that reflection can be done at runtime.

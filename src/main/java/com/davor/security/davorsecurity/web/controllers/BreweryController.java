@@ -18,6 +18,7 @@
 package com.davor.security.davorsecurity.web.controllers;
 
 import com.davor.security.davorsecurity.domain.Brewery;
+import com.davor.security.davorsecurity.security.perms.BreweryReadPermission;
 import com.davor.security.davorsecurity.services.BreweryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,14 +38,14 @@ public class BreweryController {
 
     private final BreweryService breweryService;
 
-    @PreAuthorize("hasAuthority('brewery.read')")
+    @BreweryReadPermission
     @GetMapping({"/breweries", "/breweries/index", "/breweries/index.html", "/breweries.html"})
     public String listBreweries(Model model) {
         model.addAttribute("breweries", breweryService.getAllBreweries());
         return "breweries/index";
     }
 
-    @PreAuthorize("hasAuthority('brewery.read')")
+    @BreweryReadPermission
     @GetMapping("/api/v1/breweries")
     public @ResponseBody
     List<Brewery> getBreweriesJson(){
