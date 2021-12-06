@@ -3,6 +3,7 @@ package com.davor.security.davorsecurity.web.controllers;
 import com.davor.security.davorsecurity.repositories.BeerInventoryRepository;
 import com.davor.security.davorsecurity.repositories.BeerRepository;
 import com.davor.security.davorsecurity.repositories.CustomerRepository;
+import com.davor.security.davorsecurity.services.BeerOrderService;
 import com.davor.security.davorsecurity.services.BeerService;
 import com.davor.security.davorsecurity.services.BreweryService;
 import com.davor.security.davorsecurity.services.security.JpaUserDetailsService;
@@ -34,6 +35,9 @@ class IndexControllerTest extends BaseIT {
 
     @MockBean
     JpaUserDetailsService jpaUserDetailsService;
+
+    @MockBean
+    BeerOrderService beerOrderService;
 
     @Test
     void testGetIndexSlash() throws Exception {

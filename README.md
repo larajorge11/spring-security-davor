@@ -8,7 +8,7 @@
 
 ## Roles vs Authorities
 
-* Tipically a role is considered a group of one or more authorities
+* Typically, a role is considered a group of one or more authorities
 * Voters: Access Decision Voters provide a vote to allow access
 * Role Voter
 * Authenticated Voter: Anonymously, Remembered (Cookie), Fully
@@ -26,6 +26,14 @@
 * Spring JPA Repositories
 * Custom implementation of User Details Service
 * Configure Spring Security to use the custom implementation of User Detail Service
+
+### Multi tenancy Security
+* Multi-tenant software architecture allows multiple users to share a single instance of the application
+* Tenants can be individuals or groups (Individual: gmail, Group: GitHub Organization)
+* Benefit of multi-tenancy is efficiency
+* Multi-tenancy comes in different forms
+* e.g. Instance replication, Shared application with separate DB or shared application with same DB
+* Creation of decisions 
 
 ### Tips
 * Don't use @Data of Lombok when there is a @ManyToMany: It will create two methods equals and hash code 
