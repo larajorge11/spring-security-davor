@@ -58,37 +58,60 @@ public class DefaultUserLoader implements CommandLineRunner {
 
         authorityRepository.saveAll(List.of(createBrewery, readBrewery, updateBrewery, deleteBrewery));
 
+        // Beer Orders
+        DavorAuthority createOrder = DavorAuthority.builder().permission("order.create").build();
+        DavorAuthority readOrder = DavorAuthority.builder().permission("order.read").build();
+        DavorAuthority updateOrder = DavorAuthority.builder().permission("order.update").build();
+        DavorAuthority deleteOrder = DavorAuthority.builder().permission("order.delete").build();
+
+        DavorAuthority createCustomerOrder = DavorAuthority.builder().permission("customer.order.create").build();
+        DavorAuthority readCustomerOrder = DavorAuthority.builder().permission("customer.order.read").build();
+        DavorAuthority updateCustomerOrder = DavorAuthority.builder().permission("customer.order.update").build();
+        DavorAuthority deleteCustomerOrder = DavorAuthority.builder().permission("customer.order.delete").build();
+
+        authorityRepository.saveAll(List.of(createOrder, readOrder, updateOrder, deleteOrder,
+                createCustomerOrder, readCustomerOrder, updateCustomerOrder, deleteCustomerOrder));
+
         // Saving Roles
         DavorRole adminRole = DavorRole.builder().name("ADMIN").build();
         DavorRole customerRole = DavorRole.builder().name("CUSTOMER").build();
         DavorRole userRole = DavorRole.builder().name("USER").build();
 
+        // Admin Authorities
         Set<DavorAuthority> beerAdminAuthorities = Set.of(createBeer, readBeer, updateBeer, deleteBeer);
         Set<DavorAuthority> breweryAdminAuthorities = Set.of(createBrewery, readBrewery, updateBrewery, deleteBrewery);
         Set<DavorAuthority> customerAdminAuthorities = Set.of(createCustomer, readCustomer, updateCustomer, deleteCustomer);
+        Set<DavorAuthority> orderAdminAuthorities = Set.of(createOrder, readOrder, updateOrder, deleteOrder);
 
+        // Customer Authorities
         Set<DavorAuthority> beerCustomerAuthorities = Set.of(readBeer);
         Set<DavorAuthority> breweryCustomerAuthorities = Set.of(readBrewery);
         Set<DavorAuthority> customerCustomerAuthorities = Set.of(readCustomer);
+        Set<DavorAuthority> orderCustomerAuthorities = Set.of(createCustomerOrder, readCustomerOrder, updateCustomerOrder, deleteCustomerOrder);
 
+        // User Authorities
         Set<DavorAuthority> beerUserAuthorities = Set.of(readBeer);
-        Set<DavorAuthority> breweryUserAuthorities = new HashSet<>();
-        Set<DavorAuthority> customerUserAuthorities = new HashSet<>();
 
-        adminRole.setAuthorities(new HashSet<>(getDavorAuthorities(
+       var setAdminAuthorities = new HashSet<Set<DavorAuthority>>();
+        setAdminAuthorities.addAll(Set.of(
                 beerAdminAuthorities,
                 breweryAdminAuthorities,
-                customerAdminAuthorities)));
+                customerAdminAuthorities,
+                orderAdminAuthorities));
+        adminRole.setAuthorities(getDavorAuthorities(setAdminAuthorities));
 
-        customerRole.setAuthorities(new HashSet<>(getDavorAuthorities(
+        var setCustomerAuthorities = new HashSet<Set<DavorAuthority>>();
+        setCustomerAuthorities.addAll(Set.of(
                 beerCustomerAuthorities,
                 breweryCustomerAuthorities,
-                customerCustomerAuthorities)));
+                customerCustomerAuthorities,
+                orderCustomerAuthorities));
+        customerRole.setAuthorities(getDavorAuthorities(setCustomerAuthorities));
 
-        userRole.setAuthorities(new HashSet<>(getDavorAuthorities(
-                beerUserAuthorities,
-                breweryUserAuthorities,
-                customerUserAuthorities)));
+        var setUserAuthorities = new HashSet<Set<DavorAuthority>>();
+        setUserAuthorities.addAll(Set.of(
+                beerUserAuthorities));
+        userRole.setAuthorities(getDavorAuthorities(setUserAuthorities));
 
         roleRepository.saveAll(List.of(adminRole, customerRole, userRole));
 
@@ -113,13 +136,8 @@ public class DefaultUserLoader implements CommandLineRunner {
         userRepository.saveAll(List.of(user1, user2, user3));
     }
 
-    private Set<DavorAuthority> getDavorAuthorities(Set<DavorAuthority> beerAuthorities,
-                                                    Set<DavorAuthority> breweryAuthorities,
-                                                    Set<DavorAuthority> customerAuthorities) {
-        return Stream.of(
-                beerAuthorities,
-                breweryAuthorities,
-                customerAuthorities)
+    private Set<DavorAuthority> getDavorAuthorities(Set<Set<DavorAuthority>> authorities) {
+        return authorities.stream()
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet());
     }
