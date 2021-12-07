@@ -1,5 +1,6 @@
 package com.davor.security.davorsecurity.domain.security;
 
+import com.davor.security.davorsecurity.domain.Customer;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.CredentialsContainer;
@@ -35,6 +36,9 @@ public class DavorUser implements UserDetails, CredentialsContainer {
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "role_id")})
     private Set<DavorRole> roles;
+
+    @ManyToOne
+    private Customer customer;
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
