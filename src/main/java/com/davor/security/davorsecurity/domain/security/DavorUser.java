@@ -2,6 +2,10 @@ package com.davor.security.davorsecurity.domain.security;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -15,7 +19,7 @@ import java.util.stream.Collectors;
 @Builder
 @Entity(name = "DavorUser")
 @Table(name = "user")
-public class DavorUser {
+public class DavorUser implements UserDetails, CredentialsContainer {
 
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
@@ -33,12 +37,11 @@ public class DavorUser {
     private Set<DavorRole> roles;
 
     @Transient
-    private Set<DavorAuthority> authorities;
-
-    public Set<DavorAuthority> getAuthorities() {
+    public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(DavorRole::getAuthorities)
                 .flatMap(Set::stream)
+                .map(authority -> new SimpleGrantedAuthority(authority.getPermission()))
                 .collect(Collectors.toSet());
     }
 
@@ -53,4 +56,9 @@ public class DavorUser {
 
     @Builder.Default
     private boolean enabled = true;
+
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
+    }
 }
