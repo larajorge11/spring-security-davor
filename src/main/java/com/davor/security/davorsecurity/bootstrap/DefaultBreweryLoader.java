@@ -51,6 +51,10 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     public static final String PETS_GROOMING = "Pets Grooming";
     public static final String BRANDIO = "Brand io";
 
+    public static final String USER_TECNI = "tecni";
+    public static final String USER_PETS = "pets";
+    public static final String USER_BRANDIO = "io";
+
     private final BreweryRepository breweryRepository;
     private final BeerRepository beerRepository;
     private final BeerInventoryRepository beerInventoryRepository;
@@ -92,21 +96,21 @@ public class DefaultBreweryLoader implements CommandLineRunner {
 
         // Create Users
         DavorUser tecnirodamientosUser = DavorUser.builder()
-                .username("tecni")
+                .username(USER_TECNI)
                 .password(encoder.encode("davor1989"))
                 .customer(tecnirodamientosCustomer)
                 .role(customerRole)
                 .build();
 
         DavorUser petsgroomingUser = DavorUser.builder()
-                .username("pets")
+                .username(USER_PETS)
                 .password(encoder.encode("davor1989"))
                 .customer(petsgroomingCustomer)
                 .role(customerRole)
                 .build();
 
         DavorUser brandioUser = DavorUser.builder()
-                .username("io")
+                .username(USER_BRANDIO)
                 .password(encoder.encode("davor1989"))
                 .customer(brandioCustomer)
                 .role(customerRole)
