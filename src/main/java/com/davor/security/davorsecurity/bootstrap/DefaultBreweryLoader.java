@@ -237,14 +237,16 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         DavorAuthority readOrder = DavorAuthority.builder().permission("order.read").build();
         DavorAuthority updateOrder = DavorAuthority.builder().permission("order.update").build();
         DavorAuthority deleteOrder = DavorAuthority.builder().permission("order.delete").build();
+        DavorAuthority pickupOrder = DavorAuthority.builder().permission("order.pickup").build();
 
         DavorAuthority createCustomerOrder = DavorAuthority.builder().permission("customer.order.create").build();
         DavorAuthority readCustomerOrder = DavorAuthority.builder().permission("customer.order.read").build();
         DavorAuthority updateCustomerOrder = DavorAuthority.builder().permission("customer.order.update").build();
         DavorAuthority deleteCustomerOrder = DavorAuthority.builder().permission("customer.order.delete").build();
+        DavorAuthority pickupCustomerOrder = DavorAuthority.builder().permission("customer.order.pickup").build();
 
-        authorityRepository.saveAll(List.of(createOrder, readOrder, updateOrder, deleteOrder,
-                createCustomerOrder, readCustomerOrder, updateCustomerOrder, deleteCustomerOrder));
+        authorityRepository.saveAll(List.of(createOrder, readOrder, updateOrder, deleteOrder, pickupOrder,
+                createCustomerOrder, readCustomerOrder, updateCustomerOrder, deleteCustomerOrder, pickupCustomerOrder));
 
         // Saving Roles
         DavorRole adminRole = DavorRole.builder().name("ADMIN").build();
@@ -255,13 +257,14 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         Set<DavorAuthority> beerAdminAuthorities = Set.of(createBeer, readBeer, updateBeer, deleteBeer);
         Set<DavorAuthority> breweryAdminAuthorities = Set.of(createBrewery, readBrewery, updateBrewery, deleteBrewery);
         Set<DavorAuthority> customerAdminAuthorities = Set.of(createCustomer, readCustomer, updateCustomer, deleteCustomer);
-        Set<DavorAuthority> orderAdminAuthorities = Set.of(createOrder, readOrder, updateOrder, deleteOrder);
+        Set<DavorAuthority> orderAdminAuthorities = Set.of(createOrder, readOrder, updateOrder, deleteOrder, pickupOrder);
 
         // Customer Authorities
         Set<DavorAuthority> beerCustomerAuthorities = Set.of(readBeer);
         Set<DavorAuthority> breweryCustomerAuthorities = Set.of(readBrewery);
         Set<DavorAuthority> customerCustomerAuthorities = Set.of(readCustomer);
-        Set<DavorAuthority> orderCustomerAuthorities = Set.of(createCustomerOrder, readCustomerOrder, updateCustomerOrder, deleteCustomerOrder);
+        Set<DavorAuthority> orderCustomerAuthorities = Set.of(createCustomerOrder, readCustomerOrder, updateCustomerOrder,
+                deleteCustomerOrder, pickupCustomerOrder);
 
         // User Authorities
         Set<DavorAuthority> beerUserAuthorities = Set.of(readBeer);
