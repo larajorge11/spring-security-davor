@@ -19,12 +19,15 @@ package com.davor.security.davorsecurity.services;
 
 import com.davor.security.davorsecurity.web.model.BeerOrderDto;
 import com.davor.security.davorsecurity.web.model.BeerOrderPagedList;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
 public interface BeerOrderService {
     BeerOrderPagedList listOrders(UUID customerId, Pageable pageable);
+
+    BeerOrderPagedList listOrders(Pageable pageable);
 
     BeerOrderDto placeOrder(UUID customerId, BeerOrderDto beerOrderDto);
 
