@@ -10,7 +10,6 @@ import com.davor.security.davorsecurity.repositories.CustomerRepository;
 import com.davor.security.davorsecurity.web.controllers.BaseIT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,8 +77,6 @@ public class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().isOk());
     }
 
-
-    @Disabled
     @Transactional
     @Test
     void getByOrderIdNotAuth() throws Exception {
@@ -89,7 +86,6 @@ public class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Disabled
     @Transactional
     @WithUserDetails("jorge")
     @Test
@@ -100,7 +96,6 @@ public class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    @Disabled
     @Transactional
     @WithUserDetails(DefaultBreweryLoader.USER_TECNI)
     @Test
@@ -111,7 +106,6 @@ public class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    @Disabled
     @Transactional
     @WithUserDetails(DefaultBreweryLoader.USER_PETS)
     @Test
@@ -119,6 +113,6 @@ public class BeerOrderControllerV2Test extends BaseIT {
         BeerOrder beerOrder = tecniCustomer.getBeerOrders().stream().findFirst().orElseThrow();
 
         mockMvc.perform(get(API_ROOT + beerOrder.getId()))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 }

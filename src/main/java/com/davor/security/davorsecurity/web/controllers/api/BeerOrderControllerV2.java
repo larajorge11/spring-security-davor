@@ -6,14 +6,17 @@ import com.davor.security.davorsecurity.security.perms.BeerOrderReadPermissionV2
 import com.davor.security.davorsecurity.services.BeerOrderService;
 import com.davor.security.davorsecurity.web.model.BeerOrderDto;
 import com.davor.security.davorsecurity.web.model.BeerOrderPagedList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
+@Slf4j
 @RequestMapping("/api/v2/orders/")
 @RestController
 public class BeerOrderControllerV2 {
@@ -50,10 +53,15 @@ public class BeerOrderControllerV2 {
     }
 
     @BeerOrderReadPermissionV2
-    @GetMapping("orders/{orderId}")
+    @GetMapping("{orderId}")
     public BeerOrderDto getOrder(@PathVariable("orderId") UUID orderId){
+        BeerOrderDto beerOrderDto =  beerOrderService.getOrderById(orderId);
 
-        return null;
-        //  return beerOrderService.getOrderById(orderId);
+        if (beerOrderDto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Orden not found!");
+        }
+
+        log.debug("Order found: " + beerOrderDto);
+        return beerOrderDto;
     }
 }
